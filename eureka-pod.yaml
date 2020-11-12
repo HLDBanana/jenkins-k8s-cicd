@@ -1,0 +1,145 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    k8s.kuboard.cn/displayName: 注册中心
+    k8s.kuboard.cn/ingress: 'false'
+    k8s.kuboard.cn/service: NodePort
+    k8s.kuboard.cn/workload: svc-eureka
+  creationTimestamp: '2020-11-11T11:40:47Z'
+  generation: 10
+  labels:
+    k8s.kuboard.cn/layer: svc
+    k8s.kuboard.cn/name: svc-eureka
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata': {}
+        'f:spec':
+          'f:selector': {}
+          'f:strategy': {}
+          'f:template':
+            'f:metadata': {}
+            'f:spec':
+              'f:containers': {}
+              'f:imagePullSecrets': {}
+      manager: Mozilla
+      operation: Update
+      time: '2020-11-12T03:04:00Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata': {}
+        'f:status':
+          'f:conditions': {}
+      manager: kube-controller-manager
+      operation: Update
+      time: '2020-11-12T03:04:13Z'
+  name: svc-eureka
+  namespace: hld
+  resourceVersion: '2047609'
+  selfLink: /apis/apps/v1/namespaces/hld/deployments/svc-eureka
+  uid: 0701d8c0-b69f-44ad-baa8-b2dd6297ed5e
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      k8s.kuboard.cn/layer: svc
+      k8s.kuboard.cn/name: svc-eureka
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: '2020-11-12T10:00:19+08:00'
+      labels:
+        k8s.kuboard.cn/layer: svc
+        k8s.kuboard.cn/name: svc-eureka
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: hld-configmap
+          image: '47.114.1.23/hld-k8s/eureka-server:2020-11-11_17-51-03'
+          imagePullPolicy: IfNotPresent
+          name: eureka
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          workingDir: /root
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: docker
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccount: jenkins-admin
+      serviceAccountName: jenkins-admin
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 3
+  conditions:
+    - lastTransitionTime: '2020-11-11T12:23:07Z'
+      lastUpdateTime: '2020-11-12T02:00:22Z'
+      message: ReplicaSet "svc-eureka-66b5ffb94d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+    - lastTransitionTime: '2020-11-12T03:04:13Z'
+      lastUpdateTime: '2020-11-12T03:04:13Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+  observedGeneration: 10
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    k8s.kuboard.cn/displayName: 注册中心
+    k8s.kuboard.cn/workload: svc-eureka
+  creationTimestamp: '2020-11-11T11:40:48Z'
+  labels:
+    k8s.kuboard.cn/layer: svc
+    k8s.kuboard.cn/name: svc-eureka
+  managedFields:
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata': {}
+        'f:spec':
+          'f:ports': {}
+      manager: Mozilla
+      operation: Update
+      time: '2020-11-11T11:40:47Z'
+  name: svc-eureka
+  namespace: hld
+  resourceVersion: '1891584'
+  selfLink: /api/v1/namespaces/hld/services/svc-eureka
+  uid: c5cfddfa-2a97-4665-8565-c0d60ed68f33
+spec:
+  clusterIP: 10.96.53.148
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: y2ppbp
+      nodePort: 30010
+      port: 30010
+      protocol: TCP
+      targetPort: 30010
+  selector:
+    k8s.kuboard.cn/layer: svc
+    k8s.kuboard.cn/name: svc-eureka
+  sessionAffinity: None
+  type: NodePort
+
